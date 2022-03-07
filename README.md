@@ -26,7 +26,7 @@ extension ProfileController: MVCProtocol { typealias Container = ProfileView }
 
 3、因为第二个缺点，我们交换了所有遵守 MVCProcotol 协议的类，但是在 Appdelegate 的 didFinishLaunchingWithOptions 方法中交换过多的方法会导致启动变慢，所以提供了 launch 方法，在 launch 方法中只填入首页要加载的控制器就好，如果全部写入会导致启动速度变慢！！如
 ```
-// 正确
+// 正确,只填写首页要加载的类，未填写的类遵守了协议会自动添加
 MVCManager.instance.launch([(ViewController.self, XXView.self)])
 ```
 ```
