@@ -5,7 +5,7 @@ MVC 优雅的分离 Controller 和 View
 该项目的目的就是为了剥离 Controller 层和 View 层，让 Controller 只对 view 进行配置，view 对 UI 视图进行管理
 为 Controller 添加一个默认属性 contrainer，container 为自定义 view，可以直接使用该自定义 view 内的属性及方法进行配置
 
-[Spring-data-jpa 详细介绍](https://mighty-law-736.notion.site/iOS-MVC-Controller-View-e00af8a092ae4dd4bac8f7f76b5862bc)
+[详细介绍](https://mighty-law-736.notion.site/iOS-MVC-Controller-View-e00af8a092ae4dd4bac8f7f76b5862bc)
 
 使用方法：
 1、复制 MVCManager 和 MVCProcotol 到自己项目
