@@ -7,10 +7,12 @@ MVC 优雅的分离 Controller 和 View
 
 使用方法：
 1、复制 MVCManager 和 MVCProcotol 到自己项目
-2、首先在合适的地方，如 Appdelegate 的 didFinishLaunchingWithOptions 中启动：
+
+2、在合适的地方，如 Appdelegate 的 didFinishLaunchingWithOptions 中启动：
 ```
 MVCManager.instance.launch([(ViewController.self, XXView.self)])
 ```
+
 3、对要分离 Controller 和 View 的控制器在 MVCProcotol 的底部添加以下代码就可以了
 ```
 extension ProfileController: MVCProtocol { typealias Container = ProfileView }
