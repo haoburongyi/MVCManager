@@ -10,6 +10,7 @@ MVC 优雅的分离 Controller 和 View
 
 2、在合适的地方，如 Appdelegate 的 didFinishLaunchingWithOptions 中启动：
 ```
+// 只填写首页要加载的类，未填写的类遵守了协议会自动添加
 MVCManager.instance.launch([(ViewController.self, XXView.self)])
 ```
 
