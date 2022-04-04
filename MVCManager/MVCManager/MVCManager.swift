@@ -14,11 +14,15 @@ public class MVCManager: NSObject {
     fileprivate var controllers: [UIViewController.Type] = []
     fileprivate var views: [UIView.Type] = []
     
+    fileprivate var presetModels: [(UIViewController.Type, UIView.Type)] = []
+    
     // 首页直接要显示的 Controller 调用该方法
     public func launch(_ models: [(UIViewController.Type, UIView.Type)]) {
-        _bindVCs(models)
+        
+        presetModels = models
+        MVCManager.preset
         DispatchQueue.main.async {
-            self.bindVCs()
+            MVCManager.bindVCs
         }
     }
 }
@@ -42,9 +46,15 @@ extension UIViewController {
 
 extension MVCManager {
     
-    // 延迟交换方法
-    private func bindVCs() {
-        
+    // 预设置 models 交换方法，该代码只执行一次
+    private static let preset: Void = {
+        MVCManager.instance.presetModels.forEach { model in
+            MVCManager.instance._bindVC(model)
+        }
+    }()
+ 
+    // 延迟获取延后需要交换的方法, 只执行一次
+    private static let bindVCs: Void = {
         let typeCount = Int(objc_getClassList(nil, 0))
         let types = UnsafeMutablePointer<AnyClass>.allocate(capacity: typeCount)
         let autoreleasingTypes = AutoreleasingUnsafeMutablePointer<AnyClass>(types)
@@ -54,25 +64,22 @@ extension MVCManager {
                let container = (types[index] as? MVCBaseProtocol.Type)?.getContainer {
 
                 let model: (UIViewController.Type, UIView.Type) = (cls, container)
-                _bindVC(model)
+                MVCManager.instance._bindVC(model)
             }
         }
         types.deallocate()
-    }
+    }()
     
+    // 处理模型
     private func _bindVC(_ model: (UIViewController.Type, UIView.Type)) {
+        // 保证交换过的不再交换
         guard controllers.contains(where: { $0 == model.0 }) == false else { return }
         controllers.append(model.0)
         views.append(model.1)
         swizzle(cls: model.0, original: #selector(model.0.loadView), swizzled: #selector(model.0.appLoadView))
     }
     
-    private func _bindVCs(_ models: [(UIViewController.Type, UIView.Type)]) {
-        models.forEach { model in
-            _bindVC(model)
-        }
-    }
-    
+    // 交换方法
     private func swizzle(cls: AnyClass, original originalSelector: Selector, swizzled swizzledSelector: Selector) {
         
         let originalMethod = class_getInstanceMethod(cls, originalSelector)
