@@ -18,7 +18,7 @@ protocol MVCProtocol: MVCBaseProtocol {
     var container: Container { get }
 }
 
-extension MVCProtocol  {
+extension MVCProtocol {
     var container: Container { view as! Container }
     static var getClass: UIViewController.Type { return Self.self }
     static var getContainer: UIView.Type { return Container.self }
